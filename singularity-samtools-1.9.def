@@ -1,0 +1,29 @@
+Bootstrap:docker
+From:nfcore/base
+
+
+%environment
+    PATH=/opt/:/usr/bin:/usr/local/bin:$PATH
+
+%files
+  # environment.yml
+
+%post
+
+    rm -rf /var/lib/apt/lists/*
+    apt -y clean
+    apt-get -y update
+
+    apt-get -y install locales apt-utils curl libz-dev build-essential gettext cmake libxml2-dev make libcurl4-openss\
+\
+l-dev libssl-dev libbz2-dev libboost-dev libtbb2 sudo tree
+
+    conda install -c bioconda samtools=1.9 --force-reinstall
+
+    apt-get -y clean
+    rm -rf /var/lib/apt/lists/*
+
+%test
+
+%runscript
+  samtools --version
